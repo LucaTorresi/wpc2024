@@ -1,0 +1,40 @@
+I need a bicep scripts to deploy an Azure Hub and Spoke Virtual Network Configuration in my subscription.
+All of the resources must be deployed to "West Europe" Region.
+All of the resources must be deployed to "VS-MVP-LCT" Subscription.
+I will deploy the bicep file using PowerShell.
+
+
+The first Bicep script will deploy 3 different resource group with Subscription "VS-MVP-LCT" as a target using "az deployment sub create":
+
+- RG-WPC-HUB-ITN-01
+- RG-WPC-SPK-ITN-01
+- RG-WPC-SPK-ITN-02
+
+
+The second Bicep script will deploy Hub Virtual Network using "az deployment group create":
+
+On "RG-WPC-HUB-ITN-01" create a Vnet a with the following characteristics:
+- Vnet Name: vnet-prod-hub-itn-01
+- Address space: 172.16.10.0/24
+- Subnet1 Name: AzureBastionSubnet
+- Subnet1 Address Space: 172.16.10.0/26
+- Subnet2 Name: AzureFirewallSubnet
+- Subnet2 Address Space: 172.16.10.64/26
+- Subnet3 Name: GatewaySubnet
+- Subnet3 Address Space: 172.16.10.128/27
+
+The third Bicep script will deploy Hub Virtual Network using "az deployment group create":
+
+On "RG-WPC-SPK-ITN-01" create a Vnet a with the following characteristics:
+- Vnet Name: vnet-prod-spk-itn-01
+- Address space: 172.16.11.0/24
+- Subnet1 Name: snet-prod-iaas-itn-01
+- Subnet1 Address Space: 172.16.11.0/28
+
+The fourth Bicep script will deploy Hub Virtual Network using "az deployment group create":
+
+On "RG-WPC-SPK-ITN-02" create a Vnet a with the following characteristics:
+- Vnet Name: vnet-prod-spk-itn-02
+- Address space: 172.16.12.0/24
+- Subnet1 Name: snet-prod-paas-itn-01
+- Subnet1 Address Space: 172.16.12.0/28
